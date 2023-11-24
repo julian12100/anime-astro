@@ -1,0 +1,138 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+    const url = `${import.meta.env.PUBLIC_ANIMEAPI}/animes?populate=portada`;
+    const response = await fetch(url);
+    const { data } = await response.json();
+    return data.map((anime) => ({
+        params: {
+            id: anime.attributes.url,
+        },
+        props: {
+            anime: anime.attributes,
+        },
+    }));
+}
+
+const {
+    Titulo,
+    publishedAt,
+    mega,
+    mediafire,
+    genero,
+    temporada,
+    tipo,
+    portada,
+    estado,
+    sinopsis,
+    capitulos,
+    demografia,
+    subtitulos,
+    Audio,
+    Formato,
+    fansub,
+    resolucion
+} = Astro.props.anime;
+
+var generoConComas = genero.join(', ');
+
+// Convertir la fecha
+const fechaOriginal = publishedAt; // Asumiendo que publishedAt ya tiene el formato ISO 8601
+const fechaDate = new Date(fechaOriginal);
+const fechaFormateada = `${fechaDate.getDate()}/${
+    fechaDate.getMonth() + 1
+}/${fechaDate.getFullYear()}`;
+
+console.log(Astro.props);
+---
+
+<Layout title={Titulo}>
+    <main>
+        <div class="flex m-8 border-2">
+            <div class="flex-none items-center justify-center m-2 hidden sm:block">
+                <img
+                    src={portada.data.attributes.url}
+                    width="250px"
+                />
+                {
+                    estado === "Finalizado" ? (
+                        <p class="finalizado">{estado}</p>
+                    ) : (
+                        <p class="button">{estado}</p>
+                    )
+                }
+            </div>
+            <div class="flex-auto w-5 m-2">
+                <h1 class="font-mono text-2xl">{Titulo}</h1>
+                <span class="text-xs"><b>Publicado:</b> {fechaFormateada}</span>
+                <h3 class="m-2"><b>🍁 Temporada: </b> {temporada} - {tipo}</h3>
+                <h3 class="m-2"><b>✔️ Categoria: </b> {generoConComas}</h3>
+                <h3 class="m-2"><b>🎬 Capitulos: </b> {capitulos}</h3>
+                <h3 class="m-2"><b>👨‍👦‍👦 Demografía: </b> {demografia}</h3>
+                <h3 class="m-2"><b>✐ Subtitulos: </b> {subtitulos}</h3>
+                <h3 class="m-2"><b>🎶 Audio: </b> {Audio}</h3>
+                <h3 class="m-2"><b>🎞️ Formato: </b> {Formato}</h3>
+                <h3 class="m-2"><b>🧔 Fansub: </b> {fansub}</h3>
+                <h3 class="m-2"><b>📀 Resolucion: </b> {resolucion}</h3>
+                <p class="m-3">{sinopsis}</p>
+                <div class="flex items-center justify-center m-5">
+                <img
+                    src="https://unimedata.xyz/uploads/screenshots/Image312_2.webp"
+                    alt="Descripción de la imagen"
+                    class="w-300 h-300 transition-transform transform hover:scale-110"
+                />
+            </div>
+            <div class="flex flex-col items-center justify-center m-5">
+                <h2 class="mb-4">Descargar <b>{Titulo}</b> Subtitulado: {subtitulos}</h2>
+                {
+                    mega === null ? (
+                        ''
+                    ) : (
+                    <h2 class="mb-4">
+                    Links repositorio:
+                    <a href={mega} target="_blank" class="bg-red-500 text-white px-4 py-2 rounded inline-block">Mega</a>
+                    </h2>
+                    )
+                }
+                {
+                    mediafire === null ? (
+                        ''
+                    ) : (
+                    <h2>
+                    Links repositorio:
+                    <a href={mediafire} target="_blank" class="bg-blue-500 text-white px-4 py-2 rounded inline-block">Mediafire</a>
+                </h2>
+                    )
+                }
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .button {
+            background-color: #4caf50;
+            border: none;
+            color: white;
+            padding: 8px 98px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+        }
+
+        .finalizado {
+            background-color: #a01919;
+            border: none;
+            color: white;
+            padding: 8px 98px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+        }
+    </style>
+</Layout>

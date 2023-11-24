@@ -1,0 +1,94 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 30px;
+    /* Agregar espacio alrededor de los contenedores */
+    box-sizing: border-box;
+    /* Incluir el relleno en el cálculo del tamaño total */
+}
+
+.grid-item {
+    padding: 2px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+
+.anime-entry-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+.anime-entry-content h3 {
+    margin-bottom: 10px;
+    text-align: center;
+    overflow: hidden;
+    /* Oculta el contenido que excede el límite */
+    text-overflow: ellipsis;
+    /* Añade puntos suspensivos al final del contenido truncado */
+    max-width: 200px;
+    /* Establece un límite de ancho para el elemento */
+    white-space: nowrap;
+    /* Asegura que el texto no se ajuste a más de una línea */
+}
+
+.anime-entry-content p {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 60px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.anime-entry-content img:hover {
+    filter: brightness(50%);
+}
+
+.texto {
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.73);
+    color: white;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 16px;
+    overflow: hidden;
+    /* Oculta el contenido que excede el límite */
+    text-overflow: ellipsis;
+    /* Añade puntos suspensivos al final del contenido truncado */
+    max-width: 200px;
+}
+
+.imagen {
+    position: relative;
+    display: inline-block;
+}
+
+.imagen:hover .texto {
+    visibility: visible;
+}

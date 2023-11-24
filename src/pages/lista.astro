@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const url = `${import.meta.env.PUBLIC_ANIMEAPI}/animes`;
+const respuesta = await fetch(
+	`${import.meta.env.PUBLIC_ANIMEAPI}/animes?sort=Titulo:asc`,
+);
+const { data } = await respuesta.json();
+console.log(data);
+---
+
+<Layout title="Lista anime">
+	<main>
+		{
+			data?.map((anime) => (
+				<a href={`/animes/${anime.attributes.url}`}>
+					<h3 class="m-2">
+						✔️ {anime.attributes.Titulo} -{" "}
+						{anime.attributes.resolucion}
+					</h3>
+				</a>
+			))
+		}
+	</main>
+</Layout>
+
+<style></style>

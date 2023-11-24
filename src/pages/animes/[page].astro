@@ -1,0 +1,48 @@
+---
+import Anime from "./Anime.astro"
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths({ paginate }) {
+  const response = await fetch(`${import.meta.env.PUBLIC_ANIMEAPI}/animes?populate=portada&sort[createdAt]=desc`);
+  const data = await response.json();
+  
+  const animeData = data.data; // Asume que los resultados están en la propiedad 'data'
+  return paginate(animeData, { pageSize: 12 });
+}
+
+const { page, animeData } = Astro.props;
+console.log(page);
+---
+<Layout title="Inicio">
+	<main>
+	<div class="grid-container">
+    {page.data.map((anime) => (
+      <Anime
+        titulo={anime.attributes.Titulo}
+        url={anime.attributes.url}
+        estado={anime.attributes.estado}
+        portada={anime.attributes.portada.data.attributes.url}
+        sinopsis={anime.attributes.sinopsis}
+        
+      />
+    ))}
+  </div>
+  <div class="flex items-center justify-center">
+  {page.url.prev ? <a href={page.url.prev} class="bg-slate-900 text-white m-2 py-2 px-4 rounded">Anterior</a> : null}
+  {page.url.next ? <a href={page.url.next} class="bg-slate-900 text-white m-2 py-2 px-4 rounded">Siguiente</a> : null}  
+  </div>
+	</main>
+  
+</Layout>
+  
+  <style>
+	.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 30px;
+    /* Agregar espacio alrededor de los contenedores */
+    box-sizing: border-box;
+    /* Incluir el relleno en el cálculo del tamaño total */
+}
+</style>
